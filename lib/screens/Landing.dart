@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:oltp/screens/TestRegistration.dart';
 
 class LandingScreen extends StatefulWidget {
   final Base64Codec base64 = Base64Codec();
@@ -10,14 +12,31 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
 
-@override
-  void initState() {
-  var decoded = base64.decode("ID2ieOjCrwfgWvL5sXl4B1ImC5QfbsDy45VodOp69Ct+ELDPTIJAG0G0UKUFYwlBou\/XzOynB+dpZ6NgZ19OsBw7tS9a8Gtq");
-  print(decoded);
-    super.initState();
+  Future<bool> getTestsOnceOff(String testID) async {
+    bool testExistFlag;
+    try {
+      await _testsCollectionReference.document(testID.toLowerCase()).get().then((querysnapshot) => {
+        if(querysnapshot.exists)
+          {
+            testExistFlag=true,
+          }
+        else testExistFlag=false,
+      });
+//      await _testsCollectionReference.getDocuments().then((querySnapshot) => {
+//        querySnapshot.documents.forEach((element) {
+//          print(element.data);
+//        })
+//      });
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+    return Future<bool>.value(testExistFlag);
   }
 
-
+  final CollectionReference _testsCollectionReference = Firestore.instance.collection('tests');
+  String TestID;
+  bool validID;
   final testIDController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -28,7 +47,7 @@ class _LandingScreenState extends State<LandingScreen> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.2,
           ),
-          Center(child: Image(image: AssetImage('assets/images/dlogo.png'),width: MediaQuery.of(context).size.width * 0.4,height: MediaQuery.of(context).size.height * 0.4,)),
+          Center(child: Hero(tag:'logo',child: Image(image: AssetImage('assets/images/dlogo.png'),width: MediaQuery.of(context).size.width * 0.4,height: MediaQuery.of(context).size.height * 0.4,))),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.1,
           ),
@@ -60,6 +79,16 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
           Center(
             child: InkWell(
+              onTap: ()async=>{
+                  TestID=testIDController.text,
+                  validID = await getTestsOnceOff(TestID),
+                  print(validID),
+                  if(validID)
+                    Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => TestRegistration(TestID)
+                    )
+                    ),
+              },
               child: Container(
                   width : MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.height * 0.06,
