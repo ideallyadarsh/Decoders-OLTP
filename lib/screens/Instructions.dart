@@ -1,20 +1,40 @@
 
 import 'package:flutter/material.dart';
+import 'package:oltp/models/QuestionModel.dart';
+import 'package:oltp/models/StudentModel.dart';
+import 'package:oltp/screens/TestPlatform.dart';
 
 class Instructions extends StatefulWidget {
+
+  String testID;
+  String instructions;
+  String testName;
+  List<Question> questions;
+  String testTime;
+  Student studentOne;
+  Student studentTwo;
+  int maxMembers;
+
+  Instructions(this.testID,this.testName,this.instructions,this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime);
+
   @override
   _InstructionsState createState() => _InstructionsState();
 }
 
 class _InstructionsState extends State<Instructions> {
 
-  String ins="This is a 30 minute test with 30 questions. ^Each question carries +1 mark for right answer and -0.33 for wrong answer. ^0 mark will be awarded for non attempted questions. ^The timer will start as soon as you click the Start Test button below. ^Please do not use keyboard from here onwards ^Use only mouse for any activity. ^Any use of keyboard will be seen as a cheating attempt ^The scores will be automatically submitted as soon as time runs out,or you press the Submit Button, which ever happens first. ^Each question has four options.Only one of them is correct answer.There are no multiple correct answers. ^You can switch from one question to the next or previous question using Next or Previous button. ^You can use Unanswer button to remove your selected answer for any question.";
+  @override
+  void initState() {
+    widget.questions.shuffle();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff36393f),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
+        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height*0.13),
         child: AppBar(
             backgroundColor: Color(0xff2f3136),
             automaticallyImplyLeading: false, // hides leading widget
@@ -32,7 +52,7 @@ class _InstructionsState extends State<Instructions> {
                 Container(
                   width:MediaQuery.of(context).size.width*0.675,
                   height: 100,
-                  child: FittedBox(fit: BoxFit.scaleDown,child: Text("Recruitment - 2021 (2nd Years)".toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
+                  child: FittedBox(fit: BoxFit.scaleDown,child: Text(widget.testName.toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
                 )
               ],
             )
@@ -75,7 +95,8 @@ class _InstructionsState extends State<Instructions> {
 
       Container(
         width : MediaQuery.of(context).size.width * 0.4,
-        child: Text(String.fromCharCode(0x2022)+"  "+ins.replaceAll("^", "\n"+String.fromCharCode(0x2022)+"  "),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500,height: 1.5)),
+        height: MediaQuery.of(context).size.height*0.6,
+        child: Text(widget.instructions==null?"":(String.fromCharCode(0x2022)+"  "+widget.instructions.replaceAll("^", "\n"+String.fromCharCode(0x2022)+"  ")),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500,height: 1.5)),
       ),
 
     SizedBox(
@@ -91,7 +112,10 @@ class _InstructionsState extends State<Instructions> {
     Center(
     child: InkWell(
     onTap: ()async=>{
-
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (context) => TestPlatform(widget.testID,widget.testName,widget.studentOne,widget.studentTwo,widget.maxMembers,widget.questions,widget.testTime),
+    )
+    ),
     },
     child: Container(
     width : MediaQuery.of(context).size.width * 0.3,
