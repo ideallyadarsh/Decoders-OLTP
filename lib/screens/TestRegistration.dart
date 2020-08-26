@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:oltp/models/QuestionModel.dart';
+import 'package:oltp/models/StudentModel.dart';
 import 'package:oltp/screens/Instructions.dart';
 
 class TestRegistration extends StatefulWidget {
@@ -23,8 +26,20 @@ class _TestRegistrationState extends State<TestRegistration> {
   final studentTwoEmailController = TextEditingController();
 
   final teamNameController = TextEditingController();
+  Student studentOne;
+  Student studentTwo;
 
   var maxMembers=1;
+  String testName;
+  String testDescription;
+  String testDate;
+  String noOfQuestions;
+  String testType;
+  String testTime;
+  String testInstructions;
+
+  List<Question> questions;
+
   var autoValidate = false;
 
   final _formKeyOne = GlobalKey<FormState>();
@@ -76,10 +91,60 @@ class _TestRegistrationState extends State<TestRegistration> {
   }
 
   void _setAutoValidate() {
-
       setState(() {
         autoValidate = true;
       });
+  }
+
+  saveStudentData(){
+  studentOne = new Student(studentOneNameController.text, studentOneUSNController.text, studentOnePhoneController.text, studentOneEmailController.text);
+  if(maxMembers==2)
+    studentTwo = new Student(studentTwoNameController.text, studentTwoUSNController.text, studentTwoPhoneController.text, studentTwoEmailController.text);
+  }
+
+  getTestsOnceOff(String testID) async {
+    var snapshotData;
+    var questionsCount;
+    try {
+
+      await _testsCollectionReference.document(testID.toLowerCase()).get().then((querySnapshot) => {
+          print(querySnapshot.data),
+      snapshotData = querySnapshot.data,
+      questionsCount=int.parse(querySnapshot.data["noofquestions"])
+      });
+  setState(() {
+    testDate=snapshotData["date"];
+    testName=snapshotData["name"];
+    testTime=snapshotData["time"];
+    testType=snapshotData["type"];
+    testInstructions=snapshotData["instruct"];
+    testDescription=snapshotData["desc"];
+    maxMembers=int.parse(snapshotData["maxmemb"]);
+    noOfQuestions=snapshotData["noofquestions"];
+  });
+  var ques = new List<Question>(questionsCount);
+  int i=0;
+  await _testsCollectionReference.document(testID.toLowerCase()).collection("questions").getDocuments().then((value) {
+    value.documents.forEach((element) {
+      ques[i++] = new Question.fromJson(element.data);
+    });
+  });
+  setState(() {
+    questions = ques;
+  });
+    } catch (e) {
+    print(e.toString());
+    return;
+    }
+    return;
+  }
+
+  final CollectionReference _testsCollectionReference = Firestore.instance.collection('tests');
+
+  @override
+  void initState() {
+    getTestsOnceOff(widget.TestID);
+    super.initState();
   }
 
   @override
@@ -87,7 +152,7 @@ class _TestRegistrationState extends State<TestRegistration> {
     return Scaffold(
       backgroundColor: Color(0xff36393f),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
+        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height*0.13),
         child: AppBar(
           backgroundColor: Color(0xff2f3136),
           automaticallyImplyLeading: false, // hides leading widget
@@ -105,7 +170,7 @@ class _TestRegistrationState extends State<TestRegistration> {
               Container(
                 width:MediaQuery.of(context).size.width*0.675,
                 height: 100,
-                child: FittedBox(fit: BoxFit.scaleDown,child: Text("Recruitment - 2021 (2nd Years)".toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
+                child: FittedBox(fit: BoxFit.scaleDown,child: Text(testName==null?"":testName.toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
               )
             ],
           )
@@ -170,7 +235,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.1,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Text("17th April, 2021",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                child: FittedBox(fit:BoxFit.scaleDown,child: Text(testDate==null?"":testDate,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                               ),
                             ],
                           ),
@@ -199,7 +264,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text("MCQs",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(testType==null?"":testType,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                                       ),
                                     ],
                                   ),
@@ -224,7 +289,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text("1",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(maxMembers.toString()==null?"":maxMembers.toString(),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                                       ),
                                     ],
                                   ),
@@ -257,7 +322,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.1,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Text("90 minutes",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                child: FittedBox(fit:BoxFit.scaleDown,child: Text(testTime==null?"":(testTime+" minutes"),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                               ),
                             ],
                           ),
@@ -286,7 +351,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text("40",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(noOfQuestions==null?"":noOfQuestions,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                                       ),
                                     ],
                                   ),
@@ -336,10 +401,11 @@ class _TestRegistrationState extends State<TestRegistration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height*0.02,
                   ),
+                  if(maxMembers==1)
                   Container(
                     width: MediaQuery.of(context).size.width*0.45,
                     height: MediaQuery.of(context).size.height*0.12,
-                    child: Text("We are a technical group based out of SIT Tumakuru, which carries on technical events throughout the year for the students and encourages project based learning to keep up with the latest requirements in the ever changing industry.",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w400),),
+                    child: Text(testDescription==null?"":testDescription,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w400),textAlign: TextAlign.justify,),
                   )
 
                 ],
@@ -384,6 +450,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                             prefixIcon: Icon(Icons.people,color: Colors.white70,),
                             labelText: "TEAM NAME",
                             labelStyle: TextStyle(color: Colors.white70),
+    errorText: autoValidate ? teamNameController.text.isEmpty? 'Value Can\'t Be Empty' : null:null,
                           ),
                         ),
                         width: MediaQuery.of(context).size.width * 0.3,
@@ -891,13 +958,35 @@ class _TestRegistrationState extends State<TestRegistration> {
             Center(
             child: InkWell(
     onTap: ()async=>{
+      if(maxMembers==1)
     if (_formKeyOne.currentState.validate()) {
-    // TODO submit
-    },
-    Navigator.push(context, MaterialPageRoute(
-    builder: (context) => Instructions(),
+        print(studentOneUSNController.text),
+         saveStudentData(),
+        Firestore.instance
+            .collection("users")
+        .document(widget.TestID)
+        .collection("registered")
+        .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,}),
+    Navigator.pushReplacement(context, MaterialPageRoute(
+    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime),
     )
     ),
+    },
+    if(maxMembers==2)
+      if(teamNameController.text.isNotEmpty)
+    if (_formKeyTwo.currentState.validate()) {
+    print(studentOneUSNController.text),
+    saveStudentData(),
+    Firestore.instance
+        .collection("users")
+        .document(widget.TestID)
+        .collection("registered")
+        .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,"studentTwoName": studentTwoNameController.text, "studentTwoUSN": studentTwoUSNController.text, "studentTwoEmail": studentTwoEmailController.text,"studentTwoPhone": studentTwoPhoneController.text,}),
+    Navigator.pushReplacement(context, MaterialPageRoute(
+    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime),
+    )
+    ),
+    },
     _setAutoValidate(),
     },
     child: Container(
