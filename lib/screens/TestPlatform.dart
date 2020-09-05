@@ -16,8 +16,9 @@ class TestPlatform extends StatefulWidget {
   Student studentOne;
   Student studentTwo;
   int maxMembers;
+  String maxQuestions;
 
-  TestPlatform(this.testID,this.testName, this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime);
+  TestPlatform(this.testID,this.testName, this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime,this.maxQuestions);
 
   @override
   _TestPlatformState createState() => _TestPlatformState();
@@ -129,7 +130,7 @@ print(questionsArray);
     setState(() {
       _secondsleft = int.parse(widget.testTime)*60;
       totalTime = int.parse(widget.testTime)*60;
-      maxQuestions = widget.questions.length;
+      maxQuestions = int.parse(widget.maxQuestions);
     });
     //needs rework
     html.window.onBeforeUnload.listen((event) async{

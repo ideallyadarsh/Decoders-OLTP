@@ -14,8 +14,9 @@ class Instructions extends StatefulWidget {
   Student studentOne;
   Student studentTwo;
   int maxMembers;
+  String maxQuestions;
 
-  Instructions(this.testID,this.testName,this.instructions,this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime);
+  Instructions(this.testID,this.testName,this.instructions,this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime,this.maxQuestions);
 
   @override
   _InstructionsState createState() => _InstructionsState();
@@ -113,7 +114,7 @@ class _InstructionsState extends State<Instructions> {
     child: InkWell(
     onTap: ()async=>{
     Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (context) => TestPlatform(widget.testID,widget.testName,widget.studentOne,widget.studentTwo,widget.maxMembers,widget.questions,widget.testTime),
+      builder: (context) => TestPlatform(widget.testID,widget.testName,widget.studentOne,widget.studentTwo,widget.maxMembers,widget.questions,widget.testTime,widget.maxQuestions),
     )
     ),
     },

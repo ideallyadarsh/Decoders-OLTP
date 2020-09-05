@@ -34,6 +34,7 @@ class _TestRegistrationState extends State<TestRegistration> {
   String testDescription;
   String testDate;
   String noOfQuestions;
+  String maxQuestions;
   String testType;
   String testTime;
   String testInstructions;
@@ -121,6 +122,7 @@ class _TestRegistrationState extends State<TestRegistration> {
     testDescription=snapshotData["desc"];
     maxMembers=int.parse(snapshotData["maxmemb"]);
     noOfQuestions=snapshotData["noofquestions"];
+    maxQuestions=snapshotData["maxquestions"];
   });
   var ques = new List<Question>(questionsCount);
   int i=0;
@@ -968,7 +970,7 @@ class _TestRegistrationState extends State<TestRegistration> {
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(
-    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime),
+    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
     )
     ),
     },
@@ -983,7 +985,7 @@ class _TestRegistrationState extends State<TestRegistration> {
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,"studentTwoName": studentTwoNameController.text, "studentTwoUSN": studentTwoUSNController.text, "studentTwoEmail": studentTwoEmailController.text,"studentTwoPhone": studentTwoPhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(
-    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime),
+    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
     )
     ),
     },
