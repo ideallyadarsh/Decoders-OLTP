@@ -50,7 +50,7 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
   @override
   void initState() {
     _controller = ScrollController();
-    numLines = r'\n'.allMatches(widget.code).length + 1;
+    numLines = '\n'.allMatches(widget.code).length + 2;
     print(numLines);
     super.initState();
   }
@@ -109,7 +109,7 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
                                   controller: _controller,
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                                    child: Text(widget.code.replaceAll(r"\n", '\n'), style: TextStyle(color: Colors.white70,fontSize: 18,fontWeight: FontWeight.w500,height: 1.5)),
+                                    child: Text(widget.code.replaceAll(r"!-!", ''), style: TextStyle(color: Colors.white70,fontSize: 18,fontWeight: FontWeight.w500,height: 1.5)),
 
                                   ),
                                 ),
