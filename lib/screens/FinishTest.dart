@@ -44,6 +44,7 @@ class _FinishTestState extends State<FinishTest> {
           "studentOneUSN": widget.studentOne.studentUSN,
           "studentOneEmail": widget.studentOne.studentEmail,
           "studentOnePhone": widget.studentOne.studentPhone,
+          "time":DateTime.now().toUtc()
         });
       if (widget.maxMembers == 2)
         await firestoreInstance
@@ -60,6 +61,7 @@ class _FinishTestState extends State<FinishTest> {
           "studentTwoUSN": widget.studentTwo.studentUSN,
           "studentTwoEmail": widget.studentTwo.studentEmail,
           "studentTwoPhone": widget.studentTwo.studentPhone,
+          "time":DateTime.now().toUtc()
         });
       for (var i = 0; i < widget.maxQuestions; i++)
         await firestoreInstance
