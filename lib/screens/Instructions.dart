@@ -95,9 +95,14 @@ class _InstructionsState extends State<Instructions> {
     ),
 
       Container(
-        width : MediaQuery.of(context).size.width * 0.4,
+        width : MediaQuery.of(context).size.width * 0.45,
         height: MediaQuery.of(context).size.height*0.6,
-        child: Text(widget.instructions==null?"":(String.fromCharCode(0x2022)+"  "+widget.instructions.replaceAll("^", "\n"+String.fromCharCode(0x2022)+"  ")),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500,height: 1.5)),
+        child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (OverscrollIndicatorNotification overScroll) {
+              overScroll.disallowGlow();
+              return false;
+            },child: SingleChildScrollView(child: Text(widget.instructions==null?"":(String.fromCharCode(0x2022)+"  "+widget.instructions.replaceAll("^", "\n"+String.fromCharCode(0x2022)+"  ")),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500,height: 1.5)))
+        ),
       ),
 
     SizedBox(
