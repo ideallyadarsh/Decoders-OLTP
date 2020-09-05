@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oltp/models/AnswerModel.dart';
 import 'package:oltp/models/StudentResultModel.dart';
+import 'package:oltp/screens/widgets/AdminAddQuestions.dart';
 import 'package:oltp/screens/widgets/AdminHome.dart';
 import 'package:oltp/screens/widgets/AdminResults.dart';
 
@@ -23,6 +24,7 @@ class _AdminPanelState extends State<AdminPanel> {
   final drawerItems = [
     new DrawerItem("Home", Icons.home),
     new DrawerItem("Results", Icons.schedule),
+    new DrawerItem("Add Questions",Icons.question_answer)
   ];
 
   _getDrawerItemWidget(int pos) {
@@ -32,7 +34,7 @@ class _AdminPanelState extends State<AdminPanel> {
       case 1:
         return new AdminResults();
       case 2:
-        return new Text("Error");
+        return new AdminAddQuestion();
       case 3:
         return new Text("Error");
       default:
