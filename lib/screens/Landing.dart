@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:oltp/screens/AdminLogin.dart';
+import 'package:oltp/screens/AdminPanel.dart';
 import 'package:oltp/screens/TestRegistration.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -55,8 +57,32 @@ class _LandingScreenState extends State<LandingScreen> {
       backgroundColor: Color(0xff36393f),
       body: Column(
         children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
+          Row(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width * 0.8,
+              ),
+    InkWell(
+    child: Container(
+    height:
+    MediaQuery.of(context).size.width * 0.02,
+    width: MediaQuery.of(context).size.width * 0.02,
+    child: Image(
+    image: AssetImage('assets/images/settings.png'),
+    color: Colors.white54,
+    width:
+    MediaQuery.of(context).size.width * 0.05,
+    )),
+    onTap: () => {
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => AdminLogin()),
+    )
+    },
+    ),
+            ],
           ),
           Center(child: Hero(tag:'logo',child: Image(image: AssetImage('assets/images/dlogo.png'),width: MediaQuery.of(context).size.width * 0.4,height: MediaQuery.of(context).size.height * 0.4,))),
           SizedBox(
