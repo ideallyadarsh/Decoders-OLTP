@@ -109,7 +109,6 @@ class _TestRegistrationState extends State<TestRegistration> {
     try {
 
       await _testsCollectionReference.document(testID.toLowerCase()).get().then((querySnapshot) => {
-          print(querySnapshot.data),
       snapshotData = querySnapshot.data,
       questionsCount=int.parse(querySnapshot.data["noofquestions"])
       });
@@ -353,7 +352,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(noOfQuestions==null?"":noOfQuestions,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(maxQuestions==null?"":maxQuestions,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
                                       ),
                                     ],
                                   ),
