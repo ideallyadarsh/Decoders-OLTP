@@ -168,10 +168,12 @@ class _TestRegistrationState extends State<TestRegistration> {
               SizedBox(
                 width: MediaQuery.of(context).size.width*0.025,
               ),
-              Container(
-                width:MediaQuery.of(context).size.width*0.675,
-                height: 100,
-                child: FittedBox(fit: BoxFit.scaleDown,child: Text(testName==null?"":testName.toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
+              Expanded(
+                child: Container(
+                  // width:MediaQuery.of(context).size.width*0.675,
+                  // height: 100,
+                  child: Text(testName==null?"":testName.toUpperCase(),style: TextStyle(color: Colors.white70,fontSize:50,fontWeight: FontWeight.bold,letterSpacing: 0.5)),
+                ),
               )
             ],
           )
@@ -205,7 +207,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                         borderRadius: BorderRadius.circular(5.0),
                         color: Color(0xff145cae),
                       ),
-                      child: FittedBox(fit:BoxFit.scaleDown,child: Text("TEST INFO",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,))
+                      child: Text("TEST INFO",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,)
                   ),
 
                   SizedBox(
@@ -224,19 +226,19 @@ class _TestRegistrationState extends State<TestRegistration> {
                                 //color: Colors.blue,
                                 width : MediaQuery.of(context).size.width * 0.03,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Icon(Icons.date_range,color: Colors.white70,)),
+                                child:  Icon(Icons.date_range,color: Colors.white70,),
                               ),
                               Container(
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.09,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Align(alignment:Alignment.centerLeft,child: Text("DATE :         ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),))),
+                                child: Align(alignment:Alignment.centerLeft,child: Text("DATE :         ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),)),
                               ),
                               Container(
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.1,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Text(testDate==null?"":testDate,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                child: Text(testDate==null?"":testDate,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),),
                               ),
                             ],
                           ),
@@ -255,17 +257,17 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.03,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Icon(Icons.pie_chart_outlined,color: Colors.white70,)),
+                                        child: Icon(Icons.pie_chart_outlined,color: Colors.white70,),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.09,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Align(alignment:Alignment.centerLeft,child: Text("TEST TYPE :",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),))),
+                                        child: Align(alignment:Alignment.centerLeft,child: Text("TEST TYPE :",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),)),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(testType==null?"":testType,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: Text(testType==null?"":testType,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),),
                                       ),
                                     ],
                                   ),
@@ -280,17 +282,17 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.03,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Icon(Icons.people,color: Colors.white70,)),
+                                        child: Icon(Icons.people,color: Colors.white70,),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.09,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Align(alignment:Alignment.centerLeft,child: Text("MEMBERS : ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),))),
+                                        child: Align(alignment:Alignment.centerLeft,child: Text("MEMBERS : ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),)),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(maxMembers.toString()==null?"":maxMembers.toString(),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: Text(maxMembers.toString()==null?"":maxMembers.toString(),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),),
                                       ),
                                     ],
                                   ),
@@ -311,19 +313,19 @@ class _TestRegistrationState extends State<TestRegistration> {
                                 //color: Colors.blue,
                                 width : MediaQuery.of(context).size.width * 0.03,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Icon(Icons.timer,color: Colors.white70,)),
+                                child: Icon(Icons.timer,color: Colors.white70,),
                               ),
                               Container(
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.09,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Align(alignment:Alignment.centerLeft,child: Text("DURATION :  ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),))),
+                                child: Align(alignment:Alignment.centerLeft,child: Text("DURATION :  ",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),)),
                               ),
                               Container(
                                 //color: Colors.pink,
                                 width : MediaQuery.of(context).size.width * 0.1,
                                 height: MediaQuery.of(context).size.height*0.04,
-                                child: FittedBox(fit:BoxFit.scaleDown,child: Text(testTime==null?"":(testTime+" minutes"),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                child: Text(testTime==null?"":(testTime+" minutes"),style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),),
                               ),
                             ],
                           ),
@@ -342,17 +344,17 @@ class _TestRegistrationState extends State<TestRegistration> {
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.03,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Icon(Icons.library_books,color: Colors.white70,)),
+                                        child: Icon(Icons.library_books,color: Colors.white70,),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.09,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Align(alignment:Alignment.centerLeft,child: Text("QUESTIONS :",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),))),
+                                        child: Align(alignment:Alignment.centerLeft,child: Text("QUESTIONS :",style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w600),)),
                                       ),
                                       Container(
                                         width : MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.height*0.04,
-                                        child: FittedBox(fit:BoxFit.scaleDown,child: Text(maxQuestions==null?"":maxQuestions,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),)),
+                                        child: Text(maxQuestions==null?"":maxQuestions,style: TextStyle(color: Colors.white70,fontSize: 20,fontWeight: FontWeight.w500),),
                                       ),
                                     ],
                                   ),
@@ -506,7 +508,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                         borderRadius: BorderRadius.circular(5.0),
                         color: Color(0xff145cae),
                       ),
-                      child: FittedBox(fit:BoxFit.scaleDown,child: Text("STUDENT DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,))
+                      child: Text("STUDENT DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,)
                   ),
 
                   SizedBox(
@@ -668,7 +670,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                             borderRadius: BorderRadius.circular(5.0),
                             color: Color(0xff145cae),
                           ),
-                          child: FittedBox(fit:BoxFit.scaleDown,child: Text("STUDENT 1 DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,))
+                          child: Text("STUDENT 1 DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,)
                       ),
 
                       SizedBox(
@@ -820,7 +822,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                             borderRadius: BorderRadius.circular(5.0),
                             color: Color(0xff145cae),
                           ),
-                          child: FittedBox(fit:BoxFit.scaleDown,child: Text("STUDENT 2 DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,))
+                          child:  Text("STUDENT 2 DETAILS",style: TextStyle(color: Colors.white70,fontSize: 18,letterSpacing: 1),textAlign: TextAlign.center,)
                       ),
 
                       SizedBox(
