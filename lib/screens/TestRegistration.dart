@@ -104,30 +104,32 @@ class _TestRegistrationState extends State<TestRegistration> {
   }
 
   getTestsOnceOff(String testID) async {
+
     var snapshotData;
     var questionsCount;
     try {
-
-      await _testsCollectionReference.document(testID.toLowerCase()).get().then((querySnapshot) => {
-      snapshotData = querySnapshot.data,
-      questionsCount=int.parse(querySnapshot.data["noofquestions"])
+      print("try block");
+      await _testsCollectionReference.doc(testID).get().then((value) => {
+        snapshotData = value.data(),
       });
   setState(() {
+    print("setstate block");
     testDate=snapshotData["date"];
+    print("TesTname ::"+testName);
     testName=snapshotData["name"];
     testTime=snapshotData["time"];
     testType=snapshotData["type"];
     testInstructions=snapshotData["instruct"];
     testDescription=snapshotData["desc"];
     maxMembers=int.parse(snapshotData["maxmemb"]);
-    noOfQuestions=snapshotData["noofquestions"];
+    noOfQuestions=snapshotData["noofquestion"].toString();
     maxQuestions=snapshotData["maxquestions"];
   });
-  var ques = new List<Question>(questionsCount);
+      List<Question> ques = [];
   int i=0;
-  await _testsCollectionReference.document(testID.toLowerCase()).collection("questions").getDocuments().then((value) {
-    value.documents.forEach((element) {
-      ques[i++] = new Question.fromJson(element.data);
+  await _testsCollectionReference.doc(testID.toLowerCase()).collection("questions").get().then((value) {
+    value.docs.forEach((element) {
+      ques[i++] = new Question.fromJson(element.data());
     });
   });
   setState(() {
@@ -140,10 +142,10 @@ class _TestRegistrationState extends State<TestRegistration> {
     return;
   }
 
-  final CollectionReference _testsCollectionReference = Firestore.instance.collection('tests');
-
+  final CollectionReference _testsCollectionReference = FirebaseFirestore.instance.collection('tests');
   @override
   void initState() {
+    print("gettestonece called");
     getTestsOnceOff(widget.TestID);
     super.initState();
   }
@@ -453,7 +455,7 @@ class _TestRegistrationState extends State<TestRegistration> {
                             prefixIcon: Icon(Icons.people,color: Colors.white70,),
                             labelText: "TEAM NAME",
                             labelStyle: TextStyle(color: Colors.white70),
-    errorText: autoValidate ? teamNameController.text.isEmpty? 'Value Can\'t Be Empty' : null:null,
+                            errorText: autoValidate ? teamNameController.text.isEmpty? 'Value Can\'t Be Empty' : null:null,
                           ),
                         ),
                         width: MediaQuery.of(context).size.width * 0.3,
@@ -946,7 +948,6 @@ class _TestRegistrationState extends State<TestRegistration> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height*0.015,
                       ),
-
                     ],
                   ),
                 ),
@@ -965,9 +966,9 @@ class _TestRegistrationState extends State<TestRegistration> {
     if (_formKeyOne.currentState.validate()) {
         print(studentOneUSNController.text),
          saveStudentData(),
-        Firestore.instance
+      FirebaseFirestore.instance
             .collection("users")
-        .document(widget.TestID)
+        .doc(widget.TestID)
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(
@@ -980,9 +981,9 @@ class _TestRegistrationState extends State<TestRegistration> {
     if (_formKeyTwo.currentState.validate()) {
     print(studentOneUSNController.text),
     saveStudentData(),
-    Firestore.instance
+      FirebaseFirestore.instance
         .collection("users")
-        .document(widget.TestID)
+        .doc(widget.TestID)
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,"studentTwoName": studentTwoNameController.text, "studentTwoUSN": studentTwoUSNController.text, "studentTwoEmail": studentTwoEmailController.text,"studentTwoPhone": studentTwoPhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(

@@ -1,5 +1,6 @@
 class Question {
   String id;
+  String link;
   String question;
   String type;
   String code;
@@ -9,7 +10,7 @@ class Question {
   String opt4;
 
 
-  Question({this.id, this.question, this.type, this.code, this.opt1, this.opt2,
+  Question({this.id, this.question,this.link, this.type, this.code, this.opt1, this.opt2,
       this.opt3, this.opt4});
 
   factory Question.fromJson(Map<String, dynamic> parsedJson)
@@ -17,6 +18,7 @@ class Question {
     return new Question(
         id: parsedJson['id'],
         question: parsedJson['ques'],
+        link: parsedJson['link'],
         type: parsedJson['type'],
         code: parsedJson['code'],
         opt1: parsedJson['opt1'],
@@ -25,6 +27,8 @@ class Question {
         opt4: parsedJson['opt4']
     );
   }
+
+
 
 }
 

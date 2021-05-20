@@ -13,26 +13,26 @@ class _AdminResultsState extends State<AdminResults> {
 
 
   prepareStudentList(String TestID)async{
-    var ans = new List<Answer>(100);
-    var studentResultList = new List<StudentResult>(200);
+     List<Answer> ans= [];
+     List<StudentResult> studentResultList = [];
     var studentCount=0;
     var answersCount=0;
-    await Firestore.instance.collection("answers").document(TestID).collection("correctanswers").getDocuments().then((value) {
-      value.documents.forEach((element) {
-        ans[answersCount++]= new Answer.fromJson(element.data);
+    await FirebaseFirestore.instance.collection("answers").doc(TestID).collection("correctanswers").get().then((value) {
+      value.docs.forEach((element) {
+        ans[answersCount++]= new Answer.fromJson(element.data());
       });
     });
     var tempQuesID;
     var tempOpt;
-    DocumentReference SubRef = _answeredCollectionReference.document(TestID).collection("submissions").document();
-    await  _answeredCollectionReference.document(TestID).collection("submissions").getDocuments().then((value) {
-      value.documents.forEach((element) async{
+    DocumentReference SubRef = _answeredCollectionReference.doc(TestID).collection("submissions").doc();
+    await  _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) {
+      value.docs.forEach((element) async{
         var score =0.0;
         var attemptedCount=0;
-        await _answeredCollectionReference.document(TestID).collection("submissions").document(element.documentID).collection("answers").getDocuments().then((value) {
-          value.documents.forEach((element) {
-            tempQuesID=element.data['questionId'];
-            tempOpt=element.data['answer'];
+        await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) {
+          value.docs.forEach((element) {
+            tempQuesID=element.data()['questionId'];
+            tempOpt=element.data()['answer'];
             if(!tempOpt.toString().contains("0"))
               attemptedCount++;
             for(var i=0;i<answersCount;i++)
@@ -47,7 +47,7 @@ class _AdminResultsState extends State<AdminResults> {
             }
           });
         });
-        studentResultList[studentCount++]= new StudentResult(element.data['studentOneName'], element.data['studentOneUSN'], element.data['studentOnePhone'], element.data['studentOneEmail'], attemptedCount.toString(), score.toStringAsFixed(2));
+        studentResultList[studentCount++]= new StudentResult(element.data()['studentOneName'], element.data()['studentOneUSN'], element.data()['studentOnePhone'], element.data()['studentOneEmail'], attemptedCount.toString(), score.toStringAsFixed(2));
         setState(() {
           studentsResultList=studentResultList;
           studentsCount=studentCount;
@@ -55,8 +55,8 @@ class _AdminResultsState extends State<AdminResults> {
       });
     });
   }
-  final CollectionReference _answeredCollectionReference = Firestore.instance.collection('answered');
-  var studentsResultList = new List<StudentResult>(200);
+  final CollectionReference _answeredCollectionReference =FirebaseFirestore.instance.collection('answered');
+  List<StudentResult> studentsResultList = [];
   var studentsCount=0;
   var columnHeadings = ["Sl. no.","Name","USN","Email","Phone","Attempted","Score"];
   final testIDController = TextEditingController();

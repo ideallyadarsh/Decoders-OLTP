@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class QuestionPage extends StatefulWidget {
   String ques;
+  String link;
   String code;
   String type;
   String opt1;
@@ -11,7 +13,7 @@ class QuestionPage extends StatefulWidget {
   String opt3;
   String opt4;
 
-  QuestionPage(this.ques,this.type, this.code,this.opt1,this.opt2,this.opt3,this.opt4,this.answerData,this.onDataChange,this.position);
+  QuestionPage(this.ques,this.type,this.link, this.code,this.opt1,this.opt2,this.opt3,this.opt4,this.answerData,this.onDataChange,this.position);
   final position;
   final answerData;
   final Function(int,int) onDataChange;
@@ -152,6 +154,7 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
                       ),
                     ],
                   ):
+                      widget.link==""?
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -171,7 +174,29 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
                       ),
 
                     ],
-                  ),
+                  ):
+                  Column(children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Text(widget.ques, style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,height: 1.5),textAlign: TextAlign.justify,),
+
+                        ),
+                      ),
+                    ),
+                    CachedNetworkImage(
+                      imageUrl: widget.link,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height*0.01,
+                    ),
+                  ],),
                   if(widget.type=="standard")
                   Container(
                     width: MediaQuery.of(context).size.width*0.001,
@@ -179,7 +204,6 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
                     decoration: BoxDecoration(
                       color: Colors.white24,
                     ),
-
                   ),
 
                   Container(

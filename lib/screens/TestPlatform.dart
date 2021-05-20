@@ -39,11 +39,11 @@ var numLines;
   int totalTime;
   var maxQuestions=5;
   var currentPageValue= 0;
-  var answerArray = new List(50);
-  var questionsArray = new List(50);
+  List answerArray = [];
+  List questionsArray = [];
   var answeredCount =0;
   int attendedCount=1;
-  var attended = new List(50);
+  List attended = [];
 
   void gotoNextPage()
   {
@@ -208,7 +208,7 @@ print(questionsArray);
     controller: _QuestionsController,
     physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, position) {
-          return QuestionPage(widget.questions[position].question,widget.questions[position].type,widget.questions[position].code,widget.questions[position].opt1,widget.questions[position].opt2,widget.questions[position].opt3,widget.questions[position].opt4,answerArray,onAnswerDataChange,position);
+          return QuestionPage(widget.questions[position].question,widget.questions[position].type,widget.questions[position].link,widget.questions[position].code,widget.questions[position].opt1,widget.questions[position].opt2,widget.questions[position].opt3,widget.questions[position].opt4,answerArray,onAnswerDataChange,position);
           },
           itemCount: maxQuestions, // Can be null
           ),

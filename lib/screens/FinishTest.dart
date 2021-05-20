@@ -22,7 +22,7 @@ class FinishTest extends StatefulWidget {
 class _FinishTestState extends State<FinishTest> {
   bool submitted = false;
   bool failed = false;
-  final firestoreInstance = Firestore.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
 
   submitAnswers()async{
     setState(() {
@@ -30,16 +30,16 @@ class _FinishTestState extends State<FinishTest> {
     });
     try {
       DocumentReference ref = firestoreInstance.collection("answered")
-          .document(widget.testID)
-          .collection("submissions").document();
-      String docId = ref.documentID;
+          .doc(widget.testID)
+          .collection("submissions").doc();
+      String docId = ref.id;
       if (widget.maxMembers == 1)
         await firestoreInstance
             .collection("answered")
-            .document(widget.testID)
+            .doc(widget.testID)
             .collection("submissions")
-            .document(docId)
-            .setData({
+            .doc(docId)
+            .set({
           "studentOneName": widget.studentOne.studentName,
           "studentOneUSN": widget.studentOne.studentUSN,
           "studentOneEmail": widget.studentOne.studentEmail,
@@ -49,10 +49,10 @@ class _FinishTestState extends State<FinishTest> {
       if (widget.maxMembers == 2)
         await firestoreInstance
             .collection("answered")
-            .document(widget.testID.toLowerCase())
+            .doc(widget.testID.toLowerCase())
             .collection("submissions")
-            .document(docId)
-            .setData({
+            .doc(docId)
+            .set({
           "studentOneName": widget.studentOne.studentName,
           "studentOneUSN": widget.studentOne.studentUSN,
           "studentOneEmail": widget.studentOne.studentEmail,
@@ -66,9 +66,9 @@ class _FinishTestState extends State<FinishTest> {
       for (var i = 0; i < widget.maxQuestions; i++)
         await firestoreInstance
             .collection("answered")
-            .document(widget.testID)
+            .doc(widget.testID)
             .collection("submissions")
-            .document(docId).collection("answers").add({
+            .doc(docId).collection("answers").add({
           "questionId" : widget.questionsArray[i].toString(),"answer": widget.answerArray[i].toString()
         });
       setState(() {
