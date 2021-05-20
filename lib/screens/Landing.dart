@@ -22,11 +22,10 @@ class _LandingScreenState extends State<LandingScreen> {
   
   Future<bool> getTestsOnceOff(String testID) async {
     bool testExistFlag;
-print(testID);
+    print(testID);
       await _testsCollectionReference.doc(testID).collection("questions").get().then((value) => {
         if(value.docs.isNotEmpty)
-            {print("Text is on pui pui Value exists"),
-              testExistFlag=true}
+            {print("Exists"),testExistFlag=true}
 
         else
           {print("Value not exists"),testExistFlag = false}
@@ -129,7 +128,7 @@ print(testID);
                  }
                  else{
                     validID = await getTestsOnceOff(testIDController.text),
-                    print(validID),
+                    print("Valid ID $validID"),
                     if(validID)
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TestRegistration(testIDController.text)))
                     else {

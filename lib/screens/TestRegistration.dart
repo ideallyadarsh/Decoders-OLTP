@@ -106,16 +106,20 @@ class _TestRegistrationState extends State<TestRegistration> {
   getTestsOnceOff(String testID) async {
 
     var snapshotData;
+    List<Question> ques = List<Question>.empty(growable: true);
+    int i=0;
     var questionsCount;
     try {
       print("try block");
       await _testsCollectionReference.doc(testID).get().then((value) => {
-        snapshotData = value.data(),
+        setState((){
+          snapshotData = value.data();
+        })
+
       });
   setState(() {
     print("setstate block");
     testDate=snapshotData["date"];
-    print("TesTname ::"+testName);
     testName=snapshotData["name"];
     testTime=snapshotData["time"];
     testType=snapshotData["type"];
@@ -125,12 +129,14 @@ class _TestRegistrationState extends State<TestRegistration> {
     noOfQuestions=snapshotData["noofquestion"].toString();
     maxQuestions=snapshotData["maxquestions"];
   });
-      List<Question> ques = [];
-  int i=0;
-  await _testsCollectionReference.doc(testID.toLowerCase()).collection("questions").get().then((value) {
-    value.docs.forEach((element) {
-      ques[i++] = new Question.fromJson(element.data());
-    });
+
+  await _testsCollectionReference.doc(testID).collection("questions").get().then((value) {
+    i=value.docs.length;
+    for (var j = 0; j < i; j++)
+     {
+       ques.add(Question.fromJson(value.docs[j].data()));
+       print(ques[j]);
+     }
   });
   setState(() {
     questions = ques;

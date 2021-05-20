@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class QuestionPage extends StatefulWidget {
@@ -156,16 +154,19 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
                   ):
                       widget.link==""?
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width * 0.35,
                         height: MediaQuery.of(context).size.height * 0.6,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: Text(widget.ques, style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,height: 1.5),textAlign: TextAlign.justify,),
+                        child: SingleChildScrollView(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(widget.ques, style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,height: 1.5),textAlign: TextAlign.justify,),
 
+                            ),
                           ),
                         ),
                       ),
@@ -175,28 +176,31 @@ class _QuestionPageState extends State<QuestionPage> with AutomaticKeepAliveClie
 
                     ],
                   ):
-                  Column(children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                          child: Text(widget.ques, style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,height: 1.5),textAlign: TextAlign.justify,),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(widget.ques, style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,height: 1.5),textAlign: TextAlign.justify,),
 
+                            ),
+                          ),
                         ),
-                      ),
+
+                       Image.asset('assets/images/${widget.link}'),
+
+                      ],),
                     ),
-                    CachedNetworkImage(
-                      imageUrl: widget.link,
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height*0.01,
-                    ),
-                  ],),
+                  ),
                   if(widget.type=="standard")
                   Container(
                     width: MediaQuery.of(context).size.width*0.001,

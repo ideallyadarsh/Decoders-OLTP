@@ -119,12 +119,14 @@ var numLines;
       });
     });
     for(var i=0;i<50;i++) {
-      answerArray[i] = 0;
-      attended[i] =0;
+      answerArray.add(0);
+      if(i==0)
+        attended.add(1);
+      attended.add(0);
       if(i<widget.questions.length)
-      questionsArray[i]=widget.questions[i].id;
+      questionsArray.add(widget.questions[i].id);
     }
-    attended[0]=1;
+
 print(questionsArray);
 
     setState(() {
