@@ -7,6 +7,8 @@ import 'package:oltp/screens/TestPlatform.dart';
 class Instructions extends StatefulWidget {
 
   String testID;
+  bool isactive;
+  bool isover;
   String instructions;
   String testName;
   List<Question> questions;
@@ -16,22 +18,44 @@ class Instructions extends StatefulWidget {
   int maxMembers;
   String maxQuestions;
 
-  Instructions(this.testID,this.testName,this.instructions,this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime,this.maxQuestions);
+  Instructions(this.testID,this.testName,this.isactive,this.isover,this.instructions,this.studentOne,this.studentTwo,this.maxMembers,this.questions,this.testTime,this.maxQuestions);
 
   @override
   _InstructionsState createState() => _InstructionsState();
 }
 
 class _InstructionsState extends State<Instructions> {
-
+  DateTime _myTime;
+  DateTime _ntpTime;
   @override
-  void initState() {
+  Future<void> initState()  {
     widget.questions.shuffle();
     super.initState();
   }
+  // gettime() async{
+  //
+  //   Response response=await get(Uri.parse('http://worldtimeapi.org/api/timezone/Asia/Kolkata'));
+  //   Map data=jsonDecode(response.body);
+  //   print(data);
+  //
+  //   String datetim=data['datetime'];
+  //   String offset=data['utc_offset'].substring(1,3);
+  //   print(datetim);
+  //   print(offset);
+  //   DateTime now=DateTime.parse(datetim);
+  //   now=now.add(Duration(hours:int.parse(offset)));
+  //   print(now);
+  //
+  //   // _myTime = await NTP.now();
+  //   // final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
+  //   // _ntpTime = _myTime.add(Duration(milliseconds: offset));
+  //   // print('Curent Time:$_myTime');
+  //   // print('Network TIme:$_ntpTime');
+  // }
 
   @override
   Widget build(BuildContext context) {
+    //gettime();
     return Scaffold(
       backgroundColor: Color(0xff36393f),
       appBar: PreferredSize(
@@ -115,7 +139,7 @@ class _InstructionsState extends State<Instructions> {
       SizedBox(
         height: MediaQuery.of(context).size.height*0.02,
       ),
-    Center(
+    widget.isactive?Center(
     child: InkWell(
     onTap: ()async=>{
     Navigator.pushReplacement(context, MaterialPageRoute(
@@ -136,6 +160,29 @@ class _InstructionsState extends State<Instructions> {
     )
     ),
     ),
+    ):widget.isover?Container(
+    width : MediaQuery.of(context).size.width * 0.3,
+    height: MediaQuery.of(context).size.height * 0.06,
+    decoration: BoxDecoration(
+    shape: BoxShape.rectangle,
+    borderRadius: BorderRadius.circular(5.0),
+    color: Color(0xff145cae),
+    ),
+    child: Center(
+    child: Text("Test is Over!",style: TextStyle(color: Colors.white70,fontSize: 18,),textAlign: TextAlign.center,),
+    )
+    ):
+    Container(
+        width : MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.06,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(5.0),
+          color: Colors.grey,
+        ),
+        child: Center(
+          child: Text("Test Will Start at 19:00 IST",style: TextStyle(color: Colors.white,fontSize: 18,),textAlign: TextAlign.center,),
+        )
     ),
     ],
     ),

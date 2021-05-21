@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:oltp/models/AnswerModel.dart';
 import 'package:oltp/models/StudentResultModel.dart';
 
@@ -9,47 +10,61 @@ class AdminResults extends StatefulWidget {
 }
 
 class _AdminResultsState extends State<AdminResults> {
-
-
-
   prepareStudentList(String TestID)async{
      List<Answer> ans= [];
      List<StudentResult> studentResultList = [];
     var studentCount=0;
-    var answersCount=0;
+   // var studentcount=0;
     await FirebaseFirestore.instance.collection("answers").doc(TestID).collection("correctanswers").get().then((value) {
       value.docs.forEach((element) {
-        ans[answersCount++]= new Answer.fromJson(element.data());
+        ans.add(Answer.fromJson(element.data())) ;
+        print(ans);
       });
     });
     var tempQuesID;
     var tempOpt;
     DocumentReference SubRef = _answeredCollectionReference.doc(TestID).collection("submissions").doc();
+    _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) =>
+    studentCount=value.docs.length
+    );
+    print(studentCount);
     await  _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) {
       value.docs.forEach((element) async{
         var score =0.0;
         var attemptedCount=0;
+
         await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) {
           value.docs.forEach((element) {
             tempQuesID=element.data()['questionId'];
+            print(tempQuesID);
             tempOpt=element.data()['answer'];
+            print(tempOpt);
             if(!tempOpt.toString().contains("0"))
               attemptedCount++;
-            for(var i=0;i<answersCount;i++)
+            for(var i=0;i<attemptedCount;i++)
             {
               if(tempQuesID==ans[i].quesID)
                 if(tempOpt==ans[i].opt)
-                {
+                {print("Answer Matched");
                   score++;
+                  print(score);
                 }
                 else if(!tempOpt.toString().contains("0"))
                   score=score-1/3;
+                print(score);
             }
           });
         });
-        studentResultList[studentCount++]= new StudentResult(element.data()['studentOneName'], element.data()['studentOneUSN'], element.data()['studentOnePhone'], element.data()['studentOneEmail'], attemptedCount.toString(), score.toStringAsFixed(2));
+       // print(studentResultList);
         setState(() {
-          studentsResultList=studentResultList;
+          studentsResultList.add(StudentResult(element.data()['studentOneName'], element.data()['studentOneUSN'], element.data()['studentOnePhone'], element.data()['studentOneEmail'], attemptedCount.toString(), score.toStringAsFixed(2)));
+          studentsResultList.sort((a, b) => (b.score).compareTo(a.score));
+          print(studentsResultList[0].studentName);
+          print(studentsResultList[0].score);
+          print(studentsResultList[0].attemptedQuestions);
+          print(studentsResultList[0].studentEmail);
+          print(studentsResultList[0].studentUSN);
+          print(studentsResultList[0].studentPhone);
           studentsCount=studentCount;
         });
       });
@@ -147,7 +162,14 @@ class _AdminResultsState extends State<AdminResults> {
     height: MediaQuery.of(context).size.height*0.04,
     child: FittedBox(
     fit: BoxFit.scaleDown,
-    child: Text(i==0?(j+1).toString():i==1?studentsResultList[j].studentName:i==2?studentsResultList[j].studentUSN.toUpperCase():i==3?studentsResultList[j].studentEmail:i==4?studentsResultList[j].studentPhone:i==5?studentsResultList[j].attemptedQuestions:studentsResultList[j].score,style: TextStyle(color: Colors.white70,fontSize:20,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
+    child: Text(
+        i==0?(j+1).toString():
+        i==1?studentsResultList[j].studentName:
+        i==2?studentsResultList[j].studentUSN.toUpperCase():
+        i==3?studentsResultList[j].studentEmail:
+        i==4?studentsResultList[j].studentPhone:
+        i==5?studentsResultList[j].attemptedQuestions:
+        studentsResultList[j].score, style: TextStyle(color: Colors.white70,fontSize:20,fontWeight: FontWeight.bold,letterSpacing: 0.5))),
     ),
     ],
     )

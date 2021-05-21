@@ -3,6 +3,7 @@ import 'package:oltp/screens/AdminPanel.dart';
 import 'package:oltp/screens/Landing.dart';
 import 'package:oltp/screens/widgets/AdminAddQuestions.dart';
 import 'package:oltp/screens/widgets/AdminHome.dart';
+import 'package:oltp/screens/widgets/AdminResults.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
     title: "Decoders OLTP",
       home:LandingScreen(),
     );

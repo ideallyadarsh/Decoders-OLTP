@@ -38,6 +38,8 @@ class _TestRegistrationState extends State<TestRegistration> {
   String testType;
   String testTime;
   String testInstructions;
+  bool isactive=false;
+  bool isover=false;
 
   List<Question> questions;
 
@@ -128,6 +130,8 @@ class _TestRegistrationState extends State<TestRegistration> {
     maxMembers=int.parse(snapshotData["maxmemb"]);
     noOfQuestions=snapshotData["noofquestion"].toString();
     maxQuestions=snapshotData["maxquestions"];
+    isactive=snapshotData["activetest"];
+    isover=snapshotData["isover"];
   });
 
   await _testsCollectionReference.doc(testID).collection("questions").get().then((value) {
@@ -978,7 +982,7 @@ class _TestRegistrationState extends State<TestRegistration> {
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(
-    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
+    builder: (context) => Instructions(widget.TestID,testName,isactive,isover,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
     )
     ),
     },
@@ -993,7 +997,7 @@ class _TestRegistrationState extends State<TestRegistration> {
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,"studentTwoName": studentTwoNameController.text, "studentTwoUSN": studentTwoUSNController.text, "studentTwoEmail": studentTwoEmailController.text,"studentTwoPhone": studentTwoPhoneController.text,}),
     Navigator.pushReplacement(context, MaterialPageRoute(
-    builder: (context) => Instructions(widget.TestID,testName,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
+    builder: (context) => Instructions(widget.TestID,testName,isactive,isover,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
     )
     ),
     },
