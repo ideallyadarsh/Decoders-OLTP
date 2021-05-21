@@ -75,7 +75,7 @@ class _LandingScreenState extends State<LandingScreen> {
     MediaQuery.of(context).size.width * 0.05,
     )),
     onTap: () => {
-    Navigator.pushReplacement(
+    Navigator.push(
     context,
     MaterialPageRoute(
     builder: (context) => AdminLogin()),

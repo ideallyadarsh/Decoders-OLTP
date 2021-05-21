@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:oltp/models/StudentModel.dart';
 import 'dart:html' as html;
 
+import 'package:oltp/screens/Landing.dart';
+
 class FinishTest extends StatefulWidget {
   String testID;
   Student studentOne;
@@ -86,8 +88,6 @@ class _FinishTestState extends State<FinishTest> {
 
   @override
   void initState() {
-
-
     Future.delayed(const Duration(seconds: 1),(){
       submitAnswers();
     });
@@ -95,63 +95,66 @@ class _FinishTestState extends State<FinishTest> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff36393f),
-      body: Column(
-          children: <Widget>[
-      Container(
-        height: MediaQuery.of(context).size.height*0.7,
-        width: MediaQuery.of(context).size.width,
-        color: submitted?Colors.green:Colors.indigo,
-        child: Center(
-          child: submitted?Icon(Icons.check_circle_outline,size: MediaQuery.of(context).size.height*0.4,color: Colors.white70,):
-          failed?Icon(Icons.error_outline,size: MediaQuery.of(context).size.height*0.4,color: Colors.white70,):
-          Container(
-            height: MediaQuery.of(context).size.height*0.4,
-            width: MediaQuery.of(context).size.height*0.4,
-            child: CircularProgressIndicator(
-              strokeWidth: 20,
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white38),
+    return WillPopScope(
+      onWillPop: () async => Navigator.push(context, MaterialPageRoute(builder: (context) => new LandingScreen())),
+      child: Scaffold(
+        backgroundColor: Color(0xff36393f),
+        body: Column(
+            children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height*0.7,
+          width: MediaQuery.of(context).size.width,
+          color: submitted?Colors.green:Colors.indigo,
+          child: Center(
+            child: submitted?Icon(Icons.check_circle_outline,size: MediaQuery.of(context).size.height*0.4,color: Colors.white70,):
+            failed?Icon(Icons.error_outline,size: MediaQuery.of(context).size.height*0.4,color: Colors.white70,):
+            Container(
+              height: MediaQuery.of(context).size.height*0.4,
+              width: MediaQuery.of(context).size.height*0.4,
+              child: CircularProgressIndicator(
+                strokeWidth: 20,
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white38),
+              ),
             ),
           ),
         ),
-      ),
 SizedBox(
   height: MediaQuery.of(context).size.height*0.05,
 ),
-            Center(
-              child: Text(submitted?"Awesome!":failed?"Submission Failed!":"Hold on!", style: TextStyle(color: Colors.white70,fontSize: 30,fontWeight: FontWeight.w500,),),
-            ),
+              Center(
+                child: Text(submitted?"Awesome!":failed?"Submission Failed!":"Hold on!", style: TextStyle(color: Colors.white70,fontSize: 30,fontWeight: FontWeight.w500,),),
+              ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height*0.02,
+        ),
+        Center(
+          child: Text(submitted?"Your answers have been submitted successfully.":failed?"Failed to submit your answers, Please check your Internet connection and retry.":"Your answers are being submitted.", style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,),),
+        ),
       SizedBox(
-        height: MediaQuery.of(context).size.height*0.02,
+      height: MediaQuery.of(context).size.height*0.02,
       ),
-      Center(
-        child: Text(submitted?"Your answers have been submitted successfully.":failed?"Failed to submit your answers, Please check your Internet connection and retry.":"Your answers are being submitted.", style: TextStyle(color: Colors.white70,fontSize: 21,fontWeight: FontWeight.w500,),),
-      ),
-    SizedBox(
-    height: MediaQuery.of(context).size.height*0.02,
-    ),
-      if(submitted||failed)
-      Center(
-        child: OutlineButton(
-          splashColor: Colors.white70,
-          onPressed: () {
-            if(submitted)
-              html.window.top.close();
-            if(failed)
-              submitAnswers();
-          },
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          highlightElevation: 0,
-          borderSide: BorderSide(color: Colors.white70,width: 3),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(submitted?"Close Tab":failed?"Retry":"",style: TextStyle(color: Colors.white70,fontSize: 18,fontFamily: 'one')),
+        if(submitted||failed)
+        Center(
+          child: OutlineButton(
+            splashColor: Colors.white70,
+            onPressed: () {
+              if(submitted)
+                html.window.top.close();
+              if(failed)
+                submitAnswers();
+            },
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+            highlightElevation: 0,
+            borderSide: BorderSide(color: Colors.white70,width: 3),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(submitted?"Close Tab":failed?"Retry":"",style: TextStyle(color: Colors.white70,fontSize: 18,fontFamily: 'one')),
+            ),
           ),
         ),
+      ],
       ),
-    ],
-    ),
+      ),
     );
   }
 }

@@ -178,10 +178,10 @@ class _InstructionsState extends State<Instructions> {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(5.0),
-          color: Colors.grey,
+          color: Color(0xff145cae),
         ),
         child: Center(
-          child: Text("Test Will Start at 19:00 IST",style: TextStyle(color: Colors.white,fontSize: 18,),textAlign: TextAlign.center,),
+          child: Text("Test Will Start at 19:00 IST",style: TextStyle(color: Colors.white70,fontSize: 18,),textAlign: TextAlign.center,),
         )
     ),
     ],

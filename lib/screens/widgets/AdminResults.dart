@@ -14,44 +14,57 @@ class _AdminResultsState extends State<AdminResults> {
      List<Answer> ans= [];
      List<StudentResult> studentResultList = [];
     var studentCount=0;
+    var countqq=0;
+     var tempQuesID=[];
+     var tempOpt=[];
    // var studentcount=0;
     await FirebaseFirestore.instance.collection("answers").doc(TestID).collection("correctanswers").get().then((value) {
       value.docs.forEach((element) {
         ans.add(Answer.fromJson(element.data())) ;
-        print(ans);
+        //print(element.data()['answer']);
       });
     });
-    var tempQuesID;
-    var tempOpt;
+    
     DocumentReference SubRef = _answeredCollectionReference.doc(TestID).collection("submissions").doc();
     _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) =>
     studentCount=value.docs.length
     );
-    print(studentCount);
+
+    //print(studentCount);
     await  _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) {
       value.docs.forEach((element) async{
         var score =0.0;
         var attemptedCount=0;
-
+        await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) =>
+        countqq=value.docs.length
+        );
         await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) {
           value.docs.forEach((element) {
+
+
             tempQuesID=element.data()['questionId'];
-            print(tempQuesID);
+           // print(tempQuesID);
             tempOpt=element.data()['answer'];
-            print(tempOpt);
+            //print(tempOpt);
             if(!tempOpt.toString().contains("0"))
-              attemptedCount++;
-            for(var i=0;i<attemptedCount;i++)
+             {print('attempted');
+               attemptedCount++;
+               print(attemptedCount);
+             }
+            for(var i=0;i<countqq;i++)
             {
               if(tempQuesID==ans[i].quesID)
                 if(tempOpt==ans[i].opt)
-                {print("Answer Matched");
+                {
+                  print("Answer Matched");
                   score++;
-                  print(score);
+                 // print(score);
                 }
                 else if(!tempOpt.toString().contains("0"))
-                  score=score-1/3;
-                print(score);
+                 { print("not matched");
+                   score=score-(1/3);
+                 }
+                print("Score $i = $score");
             }
           });
         });
@@ -66,6 +79,7 @@ class _AdminResultsState extends State<AdminResults> {
           print(studentsResultList[0].studentUSN);
           print(studentsResultList[0].studentPhone);
           studentsCount=studentCount;
+          print("Student Couunt:$studentsCount");
         });
       });
     });
