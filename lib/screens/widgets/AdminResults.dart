@@ -12,46 +12,40 @@ class AdminResults extends StatefulWidget {
 class _AdminResultsState extends State<AdminResults> {
   prepareStudentList(String TestID)async{
      List<Answer> ans= [];
-     List<StudentResult> studentResultList = [];
+     //List<StudentResult> studentResultList = [];
     var studentCount=0;
-    var countqq=0;
+    //var totq=0;
      var tempQuesID=[];
      var tempOpt=[];
    // var studentcount=0;
     await FirebaseFirestore.instance.collection("answers").doc(TestID).collection("correctanswers").get().then((value) {
       value.docs.forEach((element) {
         ans.add(Answer.fromJson(element.data())) ;
-        //print(element.data()['answer']);
       });
     });
     
-    DocumentReference SubRef = _answeredCollectionReference.doc(TestID).collection("submissions").doc();
-    _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) =>
-    studentCount=value.docs.length
-    );
+   // DocumentReference SubRef = _answeredCollectionReference.doc(TestID).collection("submissions").doc();
 
     //print(studentCount);
     await  _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) {
-      value.docs.forEach((element) async{
+      studentsCount=value.docs.length;
+       value.docs.forEach((element) async{
         var score =0.0;
         var attemptedCount=0;
-        await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) =>
-        countqq=value.docs.length
-        );
+
         await _answeredCollectionReference.doc(TestID).collection("submissions").doc(element.id).collection("answers").get().then((value) {
+          //countqq=value.docs.length;
           value.docs.forEach((element) {
-
-
             tempQuesID=element.data()['questionId'];
            // print(tempQuesID);
             tempOpt=element.data()['answer'];
             //print(tempOpt);
             if(!tempOpt.toString().contains("0"))
-             {print('attempted');
+             {//print('attempted');
                attemptedCount++;
-               print(attemptedCount);
+               //print(attemptedCount);
              }
-            for(var i=0;i<countqq;i++)
+            for(var i=0;i<ans.length;i++)
             {
               if(tempQuesID==ans[i].quesID)
                 if(tempOpt==ans[i].opt)
