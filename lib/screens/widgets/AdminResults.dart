@@ -15,12 +15,13 @@ class _AdminResultsState extends State<AdminResults> {
      //List<StudentResult> studentResultList = [];
     var studentCount=0;
     //var totq=0;
-     var tempQuesID=[];
-     var tempOpt=[];
+     var tempQuesID;
+     var tempOpt;
    // var studentcount=0;
     await FirebaseFirestore.instance.collection("answers").doc(TestID).collection("correctanswers").get().then((value) {
       value.docs.forEach((element) {
         ans.add(Answer.fromJson(element.data())) ;
+       // print(ans);
       });
     });
     
@@ -28,7 +29,7 @@ class _AdminResultsState extends State<AdminResults> {
 
     //print(studentCount);
     await  _answeredCollectionReference.doc(TestID).collection("submissions").get().then((value) {
-      studentsCount=value.docs.length;
+      studentCount=value.docs.length;
        value.docs.forEach((element) async{
         var score =0.0;
         var attemptedCount=0;

@@ -981,6 +981,16 @@ class _TestRegistrationState extends State<TestRegistration> {
         .doc(widget.TestID)
         .collection("registered")
         .add({"studentOneName": studentOneNameController.text, "studentOneUSN": studentOneUSNController.text, "studentOneEmail": studentOneEmailController.text,"studentOnePhone": studentOnePhoneController.text,}),
+      // FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(widget.TestID)
+      //     .collection("registered").get().then((value) =>
+      //     value.docs.forEach((element) {
+      //       if(element.data()["studentOneUSN"]==studentOneUSNController.text)
+      //
+      //     })
+      // ),
+
     Navigator.pushReplacement(context, MaterialPageRoute(
     builder: (context) => Instructions(widget.TestID,testName,isactive,isover,testInstructions,studentOne,studentTwo,maxMembers,questions,testTime,maxQuestions),
     )

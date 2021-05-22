@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:oltp/models/StudentModel.dart';
@@ -139,7 +141,8 @@ SizedBox(
             splashColor: Colors.white70,
             onPressed: () {
               if(submitted)
-                html.window.top.close();
+                {window.close();
+                html.window.top.close();}
               if(failed)
                 submitAnswers();
             },
@@ -148,7 +151,7 @@ SizedBox(
             borderSide: BorderSide(color: Colors.white70,width: 3),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(submitted?"Close Tab":failed?"Retry":"",style: TextStyle(color: Colors.white70,fontSize: 18,fontFamily: 'one')),
+              child: Text(submitted?"You Can Close the tab now.":failed?"Retry":"",style: TextStyle(color: Colors.white70,fontSize: 18,fontFamily: 'one')),
             ),
           ),
         ),

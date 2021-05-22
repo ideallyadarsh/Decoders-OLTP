@@ -32,13 +32,7 @@ class _AdminAddQuestionState extends State<AdminAddQuestion> {
 
   }
   bool imageError = false;
-  //final picker = ImagePicker();
-  // Future _pickImage() async {
-  //   final _image = await FlutterWebImagePicker.getImage;
-  //   setState(() {
-  //     _cropFile = _image;
-  //   });
-  // }
+
   returnIdleButtonDelay(){
     Future.delayed(const Duration(seconds: 2),(){
       setState(() {
